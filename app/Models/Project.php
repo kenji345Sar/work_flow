@@ -9,7 +9,12 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description'];
+    protected $fillable = ['user_id', 'title', 'description'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function tasks()
     {

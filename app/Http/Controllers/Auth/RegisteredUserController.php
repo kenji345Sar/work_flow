@@ -21,8 +21,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): Response
     {
-        Log::info('aaaaa');
-        Log::info($request->all());
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
