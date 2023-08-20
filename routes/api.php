@@ -1,11 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TaskController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,41 +18,36 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-// Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
-Route::get('user/{id}', [ApiController::class, 'show']);
-
 Route::post('register', [RegisteredUserController::class, 'store']);
+Route::post('/login', [AuthController::class, 'login']);
 
-// projectsテーブルのエンドポイント
-// Route::prefix('projects')->group(function () {
-//     Route::post('/', [ProjectController::class, 'store']); // 登録
-//     Route::get('/{id}', [ProjectController::class, 'show']); // 表示
-//     Route::put('/{id}', [ProjectController::class, 'update']); // 編集
-//     Route::delete('/{id}', [ProjectController::class, 'destroy']); // 削除
-// });
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('user', [ApiController::class, 'showCurrentAuthenticatedUser']);
+    Route::get('user/projects', [ProjectController::class, 'getUserProjects']);
+    Route::get('user/tasks', [TaskController::class, 'getUserTasks']);
+
+    Route::get('user/{id}', [ApiController::class, 'show']);
+
+
     Route::resource('projects', ProjectController::class)->only([
         'index', 'store', 'show', 'update', 'destroy'
     ]);
-});
 
-Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/projects/{projectId}/tasks', [TaskController::class, 'store']);
 
+    // ProjectUserテーブルのエンドポイント
+    Route::prefix('project-users')->group(function () {
+        Route::post('/', [ProjectUserController::class, 'store']);
+        Route::get('/{id}', [ProjectUserController::class, 'show']);
+        Route::delete('/{id}', [ProjectUserController::class, 'destroy']);
+    });
 
-// ProjectUserテーブルのエンドポイント
-Route::prefix('project-users')->group(function () {
-    Route::post('/', [ProjectUserController::class, 'store']); // 登録
-    Route::get('/{id}', [ProjectUserController::class, 'show']); // 表示
-    Route::delete('/{id}', [ProjectUserController::class, 'destroy']); // 削除
-});
-
-// Tasksテーブルのエンドポイント
-Route::prefix('tasks')->group(function () {
-    Route::post('/', [TaskController::class, 'store']); // 登録
-    Route::get('/{id}', [TaskController::class, 'show']); // 表示
-    Route::put('/{id}', [TaskController::class, 'update']); // 編集
-    Route::delete('/{id}', [TaskController::class, 'destroy']); // 削除
+    // Tasksテーブルのエンドポイント
+    Route::prefix('tasks')->group(function () {
+        Route::post('/', [TaskController::class, 'store']);
+        Route::get('/{id}', [TaskController::class, 'show']);
+        Route::put('/{id}', [TaskController::class, 'update']);
+        Route::delete('/{id}', [TaskController::class, 'destroy']);
+    });
 });

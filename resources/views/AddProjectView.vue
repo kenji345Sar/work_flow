@@ -38,7 +38,8 @@ export default {
                 });
                 console.log('response:', response.data)
                 // 成功時の処理。例えば、ユーザーをプロジェクトのページにリダイレクトするなど。
-                this.$router.push(`/project/${response.data.id}/tasks`);
+                this.$router.push(`/project/${response.data.project.id}/tasks`);
+
             } catch (error) {
                 // エラー処理。例えば、エラーメッセージの表示など。
                 this.error = "There was an error adding the project. Please try again.";

@@ -6,6 +6,7 @@ import RegisterView from "../views/RegisterView.vue";
 import AddProjectView from "../views/AddProjectView.vue";
 import ProjectTasksView from "../views/ProjectTasksView.vue";
 import LoginView from "../views/LoginView.vue";
+import UserDashboard from "../views/UserDashboard.vue";
 
 const routes = [
     {
@@ -44,6 +45,11 @@ const routes = [
         path: "/login",
         component: LoginView,
         name: "login"
+    },
+    {
+        path: "/dashboard",
+        component: UserDashboard,
+        name: "dashboard"
     }
 ]
 
@@ -51,6 +57,17 @@ const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: routes
 })
+
+router.beforeEach((to, from, next) => {
+    const loggedIn = localStorage.getItem('auth_token');
+
+    // ルートが認証を要求するかどうかを確認
+    if (to.matched.some(record => record.meta.requiresAuth) && !loggedIn) {
+        next({ name: 'login' });  // ログインページにリダイレクト
+    } else {
+        next();  // それ以外の場合は通常通りルートに進む
+    }
+});
 
 export default router
 

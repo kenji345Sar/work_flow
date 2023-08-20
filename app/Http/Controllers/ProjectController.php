@@ -86,4 +86,17 @@ class ProjectController extends Controller
 
         return response()->json(['message' => 'Project deleted successfully.']);
     }
+
+    public function getUserProjects(Request $request)
+    {
+        // 認証済みのユーザーIDを取得
+        $userId = Auth::id();
+        Log::info('test11');
+        Log::info($userId);
+        Log::info('test22');
+        // ユーザーのプロジェクトを取得
+        $projects = Project::where('user_id', $userId)->get();
+        Log::info($projects);
+        return response()->json($projects);
+    }
 }

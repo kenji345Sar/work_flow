@@ -41,13 +41,14 @@ export default {
                     // トークンをlocalStorageに保存
                     localStorage.setItem('auth_token', response.data.token);
 
-                    this.$router.push({ name: 'home' });
+                    this.$router.push({ name: 'dashboard' });
+                } else {
+                    this.errorMessage = 'Login failed';
                 }
-
-                if (response.data.message === 'Login successful') {
-                    this.errorMessage = '';  // 成功した場合はエラーメッセージをクリア
-                    this.$router.push({ name: 'home' });
-                }
+                // if (response.data.message === 'Login successful') {
+                //     this.errorMessage = '';  // 成功した場合はエラーメッセージをクリア
+                //     this.$router.push({ name: 'home' });
+                // }
             } catch (error) {
                 this.errorMessage = error.response.data.message || 'Login failed';  // エラーメッセージを設定
                 console.error('Login failed:', error.response.data);
