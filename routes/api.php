@@ -6,7 +6,9 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TaskController;
-
+use App\Http\Controllers\TrelloController;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\TestController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,6 +22,11 @@ use App\Http\Controllers\TaskController;
 
 Route::post('register', [RegisteredUserController::class, 'store']);
 Route::post('/login', [AuthController::class, 'login']);
+
+
+Route::get('/trello-tasks', [TrelloController::class, 'showTrelloTasks']);
+
+
 
 Route::middleware('auth:sanctum')->group(function () {
 
@@ -51,3 +58,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{id}', [TaskController::class, 'destroy']);
     });
 });
+
+// テスト用エンドポイント
+Route::get('/test', [TestController::class, 'logTestData']);
+
+Route::get('/test-empst', [TestController::class, 'logEmpstData']);

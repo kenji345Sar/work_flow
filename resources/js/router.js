@@ -7,6 +7,7 @@ import AddProjectView from "../views/AddProjectView.vue";
 import ProjectTasksView from "../views/ProjectTasksView.vue";
 import LoginView from "../views/LoginView.vue";
 import UserDashboard from "../views/UserDashboard.vue";
+import TrelloTasks from "../views/TrelloTasks.vue";
 
 const routes = [
     {
@@ -50,6 +51,10 @@ const routes = [
         path: "/dashboard",
         component: UserDashboard,
         name: "dashboard"
+    },
+    {
+        path: '/trello-tasks',
+        component: TrelloTasks
     }
 ]
 
